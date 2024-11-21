@@ -11,12 +11,12 @@ public class MemberController {
   private MemberServices memberServices;
 
   @PostMapping
-  public Member createMember(@RequestBody Member newMember) {
+  public Member postMember(@RequestBody Member newMember) {
     return memberServices.createMember(newMember);
   }
 
   @GetMapping
-  public Member findMemberById(@RequestBody long id) {
+  public Member getMemberById(@RequestBody long id) {
     return memberServices.findMemberById(id);
   }
 
