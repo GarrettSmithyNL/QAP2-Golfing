@@ -6,17 +6,21 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/member")
-public class MemberController {
+public class  MemberController {
+  private final MemberServices memberServices;
+
   @Autowired
-  private MemberServices memberServices;
+  public MemberController(MemberServices memberServices) {
+    this.memberServices = memberServices;
+  }
 
   @PostMapping
   public Member postMember(@RequestBody Member newMember) {
     return memberServices.createMember(newMember);
   }
 
-  @GetMapping
-  public Member getMemberById(@RequestBody long id) {
+  @GetMapping("/{id}")
+  public Member getMemberById(@PathVariable long id) {
     return memberServices.findMemberById(id);
   }
 

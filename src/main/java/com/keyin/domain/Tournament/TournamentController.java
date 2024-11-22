@@ -7,16 +7,20 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/tournament")
 public class TournamentController {
 
+  private final TournamentServices tournamentServices;
+
   @Autowired
-  private TournamentServices tournamentServices;
+  public TournamentController(TournamentServices tournamentServices) {
+    this.tournamentServices = tournamentServices;
+  }
 
   @PostMapping
   public Tournament postTournament(@RequestBody Tournament newTournament) {
     return tournamentServices.createTournament(newTournament);
   }
 
-  @GetMapping
-  public Tournament getTournamentById(@RequestBody long id) {
+  @GetMapping("/{id}")
+  public Tournament getTournamentById(@PathVariable long id) {
     return tournamentServices.findTournamentById(id);
   }
 
