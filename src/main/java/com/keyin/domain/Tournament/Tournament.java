@@ -16,7 +16,7 @@ public class Tournament {
 
   private LocalDate startDate;
   private LocalDate endDate;
-  private String Location;
+  private String location;
   private double entryFee;
   private double prizeAmount;
 
@@ -44,11 +44,11 @@ public class Tournament {
   }
 
   public String getLocation() {
-    return Location;
+    return location;
   }
 
   public void setLocation(String location) {
-    Location = location;
+    this.location = location;
   }
 
   public double getEntryFee() {

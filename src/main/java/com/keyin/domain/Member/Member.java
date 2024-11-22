@@ -7,6 +7,7 @@ import jakarta.persistence.SequenceGenerator;
 
 import java.time.LocalDate;
 
+
 @Entity
 public class Member {
 
@@ -20,7 +21,8 @@ public class Member {
   private String email;
   private String phoneNumber;
   private LocalDate startOfMember;
-  private int durationOfMember;
+  private long durationOfMemberInDays;
+
 
   public long getId() {
     return id;
@@ -66,11 +68,11 @@ public class Member {
     this.startOfMember = startOfMember;
   }
 
-  public int getDurationOfMember() {
-    return durationOfMember;
+  public long getDurationOfMemberInDays() {
+    return durationOfMemberInDays;
   }
 
-  public void setDurationOfMember(int durationOfMember) {
-    this.durationOfMember = durationOfMember;
+  public void setDurationOfMemberInDays(long durationOfMember) {
+    this.durationOfMemberInDays = durationOfMember;
   }
 }
