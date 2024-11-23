@@ -5,7 +5,6 @@ import com.keyin.domain.Member.MemberServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,6 +34,14 @@ public class TournamentServices {
     }
 
     return tournamentRepository.save(newTournament);
+  }
+
+  public Tournament addMemberToTournament(long tournamentId, Member memberToAdd) {
+    Tournament tournamentInDb = findTournamentById(tournamentId);
+    List<Member> membersInTournament = tournamentInDb.getPlayersInTournament();
+    membersInTournament.add(memberServices.createMember(memberToAdd));
+    tournamentInDb.setPlayersInTournament(membersInTournament);
+    return tournamentRepository.save(tournamentInDb);
   }
 
   public Tournament findTournamentById(long id) {
