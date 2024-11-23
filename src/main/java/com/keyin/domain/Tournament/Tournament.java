@@ -20,7 +20,7 @@ public class Tournament {
   private double entryFee;
   private double prizeAmount;
 
-  @OneToMany
+  @ManyToMany
   private List<Member> playersInTournament;
 
   public long getId() {

@@ -5,6 +5,7 @@ import com.keyin.domain.Member.MemberServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +22,8 @@ public class TournamentServices {
   }
 
   public Tournament createTournament(Tournament newTournament) {
+    List<Member> updatedMembers = memberServices.createMembers(newTournament.getPlayersInTournament());
+    newTournament.setPlayersInTournament(updatedMembers);
     Tournament tournamentInDb = findByStartDateAndLocation(newTournament);
     if(tournamentInDb != null) {
       tournamentInDb.getPlayersInTournament().addAll(
@@ -30,11 +33,7 @@ public class TournamentServices {
                       .toList());
       newTournament = tournamentInDb;
     }
-    List<Member> newMembers = newTournament.getPlayersInTournament();
-    for(Member newMember : newMembers) {
-      newMember = memberServices.createMember(newMember);
-    }
-    newTournament.setPlayersInTournament(newMembers);
+
     return tournamentRepository.save(newTournament);
   }
 
