@@ -19,8 +19,9 @@ public class MemberServices {
   }
 
   public Member createMember(Member newMember) {
-    Member memberInDb = findMemberByNameAndEmail(newMember);
+    Member memberInDb = findMember(newMember);
     if(memberInDb != null) {
+      updateMember(newMember, memberInDb);
       newMember = memberInDb;
     } else {
       newMember.setDurationOfMemberInDays(calcMembershipDuration(newMember.getStartOfMember()));
@@ -31,9 +32,9 @@ public class MemberServices {
   public List<Member> createMembers(List<Member> newMembers) {
     List<Member> updatedMembers = new ArrayList<>();
     for(Member newMember : newMembers) {
-      Member memberInDb = findMemberByNameAndEmail(newMember);
+      Member memberInDb = findMember(newMember);
       if (memberInDb != null) {
-        updatedMembers.add(updateMember(memberInDb));
+        updatedMembers.add(updateMember(newMember, memberInDb));
       } else {
         updatedMembers.add(createMember(newMember));
       }
@@ -41,28 +42,45 @@ public class MemberServices {
     return (List<Member>) memberRepository.saveAll(updatedMembers);
   }
 
-  public Member updateMember(Member memberToUpdate) {
-    Member memberInDb = findMemberByNameAndEmail(memberToUpdate);
-    if(memberToUpdate.getAddress() != null) {
-      memberInDb.setAddress(memberToUpdate.getAddress());
-    }
-    if(memberToUpdate.getPhoneNumber() != null) {
-      memberInDb.setPhoneNumber(memberToUpdate.getPhoneNumber());
-    }
+  public Member updateMember(Member memberToUpdate, Member memberInDb) {
+    memberInDb.setAddress(memberToUpdate.getAddress());
+    memberInDb.setEmail(memberToUpdate.getEmail());
+    memberInDb.setPhoneNumber(memberInDb.getPhoneNumber());
+    memberInDb.setDurationOfMemberInDays(calcMembershipDuration(memberInDb.getStartOfMember()));
     return memberInDb;
   }
+
 
   public Member findMemberById(long id) {
     Optional<Member> optionalMember = memberRepository.findById(id);
     return optionalMember.orElse(null);
   }
 
-  public Member findMemberByNameAndEmail(Member member) {
+  private Member findMemberByNameAndEmail(Member member) {
     return memberRepository.findByNameAndEmail(member.getName(), member.getEmail());
+  }
+
+  private Member findByNameAndAddress(Member member) {
+    return memberRepository.findByNameAndEmail(member.getName(), member.getAddress());
+  }
+
+  private Member findByNameAndPhoneNumber(Member member) {
+    return memberRepository.findByNameAndEmail(member.getName(), member.getPhoneNumber());
   }
 
   private long calcMembershipDuration(LocalDate startDate) {
     LocalDate today = LocalDate.now();
     return ChronoUnit.DAYS.between(startDate, today);
+  }
+
+  public Member findMember(Member memberToFind) {
+    Member memberInDb = findMemberByNameAndEmail(memberToFind);
+    if (memberInDb == null) {
+      memberInDb = findByNameAndAddress(memberToFind);
+      if (memberInDb == null) {
+        memberInDb = findByNameAndPhoneNumber(memberToFind);
+      }
+    }
+    return memberInDb;
   }
 }
