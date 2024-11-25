@@ -4,6 +4,9 @@ import com.keyin.domain.Member.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.List;
+
 @RestController
 @RequestMapping("/tournament")
 public class TournamentController {
@@ -28,5 +31,11 @@ public class TournamentController {
   public Tournament getTournamentById(@PathVariable long id) {
     return tournamentServices.findTournamentById(id);
   }
+
+  @GetMapping("/memebers/startdate/{tournamentStartDate}")
+  public List<Member> getMembersByTournamentStartDate(@PathVariable LocalDate tournamentStartDate) {
+    return tournamentServices.findAllMembersByTournamentStartDate(tournamentStartDate);
+  }
+  
 
 }

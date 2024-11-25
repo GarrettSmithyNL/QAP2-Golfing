@@ -50,13 +50,31 @@ public class MemberServices {
     return memberInDb;
   }
 
+  public Member findMember(Member memberToFind) {
+    Member memberInDb = findByNameAndEmail(memberToFind);
+    if (memberInDb == null) {
+      memberInDb = findByNameAndAddress(memberToFind);
+      if (memberInDb == null) {
+        memberInDb = findByNameAndPhoneNumber(memberToFind);
+      }
+    }
+    return memberInDb;
+  }
 
-  public Member findMemberById(long id) {
+  public Member findById(long id) {
     Optional<Member> optionalMember = memberRepository.findById(id);
     return optionalMember.orElse(null);
   }
 
-  private Member findMemberByNameAndEmail(Member member) {
+  public List<Member> findAllByName(String name) {
+    return memberRepository.findAllByName(name);
+  }
+
+  public List<Member> findAllByPhoneNumber(String phoneNumber) {
+    return memberRepository.findAllByPhoneNumber(phoneNumber);
+  }
+
+  private Member findByNameAndEmail(Member member) {
     return memberRepository.findByNameAndEmail(member.getName(), member.getEmail());
   }
 
@@ -73,14 +91,5 @@ public class MemberServices {
     return ChronoUnit.DAYS.between(startDate, today);
   }
 
-  public Member findMember(Member memberToFind) {
-    Member memberInDb = findMemberByNameAndEmail(memberToFind);
-    if (memberInDb == null) {
-      memberInDb = findByNameAndAddress(memberToFind);
-      if (memberInDb == null) {
-        memberInDb = findByNameAndPhoneNumber(memberToFind);
-      }
-    }
-    return memberInDb;
-  }
+
 }
