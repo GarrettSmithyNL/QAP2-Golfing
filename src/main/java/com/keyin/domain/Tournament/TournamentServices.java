@@ -65,6 +65,19 @@ public class TournamentServices {
     return membersByStartDate;
   }
 
+  public List<Tournament> findByStartDate(LocalDate startDate) {
+    return tournamentRepository.findAllByStartDate(startDate);
+  }
+
+  public List<Tournament> findByLocation(String location) {
+    return tournamentRepository.findAllByLocation(location);
+  }
+
+  public List<Member> findMembersByTournament(long id) {
+    Tournament tournamentInDb = findTournamentById(id);
+    return tournamentInDb.getPlayersInTournament();
+  }
+
   private List<Tournament> findAllByStartDate(LocalDate startDate) {
     return tournamentRepository.findAllByStartDate(startDate);
   }
