@@ -37,13 +37,13 @@ public class TournamentController {
     return tournamentServices.findMembersByTournament(id);
   }
 
-  @GetMapping("/{tournamentStartDate")
-  public List<Tournament> getTournamentByStartDate(LocalDate startDate) {
-    return tournamentServices.findByStartDate(startDate);
+  @GetMapping("/start-date/{tournamentStartDate}")
+  public List<Tournament> getTournamentByStartDate(@PathVariable LocalDate tournamentStartDate) {
+    return tournamentServices.findByStartDate(tournamentStartDate);
   }
 
-  @GetMapping("/{location}")
-  public List<Tournament> getByLocations(String location) {
+  @GetMapping("/location/{location}")
+  public List<Tournament> getByLocations(@PathVariable String location) {
     return tournamentServices.findByLocation(location);
   }
 

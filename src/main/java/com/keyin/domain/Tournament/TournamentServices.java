@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -65,8 +66,8 @@ public class TournamentServices {
     return membersByStartDate;
   }
 
-  public List<Tournament> findByStartDate(LocalDate startDate) {
-    return tournamentRepository.findAllByStartDate(startDate);
+  public List<Tournament> findByStartDate(LocalDate tournamentStartDate) {
+    return tournamentRepository.findAllByStartDate(tournamentStartDate);
   }
 
   public List<Tournament> findByLocation(String location) {
